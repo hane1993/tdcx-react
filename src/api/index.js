@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5000/api';
+const url = 'https://tdcx-node.herokuapp.com/api';
 
 /**
  * Default dynamic API call
