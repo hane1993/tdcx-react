@@ -84,8 +84,10 @@ export default function Tasks() {
    * @param {String} selectedId
    */
   const deleteTask = (selectedId) => {
-    apiRequest(`tasks/${selectedId}`, 'DELETE').then(() => {
+    apiRequest(`tasks/${selectedId}`, 'DELETE').then((response) => {
       Alert('Success', 'Task Successfully Deleted!', 'success');
+
+      setNewTask(response);
     });
   };
 
