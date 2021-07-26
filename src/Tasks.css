@@ -1,0 +1,27 @@
+.no-task-card {
+  margin-top: 100px;
+}
+
+.tasks-page {
+  margin-top: 30px;
+}
+
+.task-heading {
+  text-align: center;
+}
+
+.mark-completed {
+  text-decoration: line-through;
+}
+
+i {
+  cursor: pointer;
+}
+
+td i + i {
+  padding-left: 1em;
+}
+
+.task-btn {
+  width: 100% !important;
+}
