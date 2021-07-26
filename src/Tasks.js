@@ -138,7 +138,12 @@ export default function Tasks() {
         <div className='container'>
           <div className='row mb-3'>
             <div className='col-lg-6 col-md-4 col-xs-12'>
-              <h4 className='text-lg-start text-center'>Tasks</h4>
+              <h3 style={{ color: '#6c757d!important' }} className='text-lg-start text-center'>
+                <strong>
+                  Tasks
+                </strong>
+              </h3>
+              
             </div>
             <div className='col-lg-6 col-md-8 col-xs-12'>
               <div className='row'>
@@ -150,12 +155,18 @@ export default function Tasks() {
                     onChange={handleSearchOnChange}
                   />
                 </div>
-                <div className='col-md-4 col-xs-12'>
+                <div style={{
+                  marginTop: -4,
+                }}
+                  className='col-md-4 col-xs-12'>
                   <Button
                     className='btn-block mr-1 mt-1 task-btn'
                     variant='primary'
                     block
                     onClick={showModal}
+                    style={{
+                      backgroundColor: '#5285ec'
+                    }}
                   >
                     <i className='fas fa-plus'></i> New Task
                   </Button>
@@ -163,6 +174,12 @@ export default function Tasks() {
               </div>
             </div>
           </div>
+          <div style={{
+                borderRadius: 11,
+                padding: 20,
+              }}
+            className='card card-background card-background-mask-primary mt-md-0 mt-5 h-75'
+          >
           <table className='table table-hover'>
             <tbody>
               {Object.entries(tasks).map(([index, task]) => {
@@ -177,20 +194,29 @@ export default function Tasks() {
                         onChange={handleTaskComplete}
                       />
                     </th>
-                    <td className={task.isComplete ? 'mark-completed' : ''}>
-                      {task.task}
+                    <td className={task.isComplete ? 'mark-completed-table' : 'simple-task'}>
+                      <strong>
+                        {task.task}
+                      </strong>
                     </td>
                     <td>
                       <i
                         onClick={() => showModal(index)}
                         className='fa fa-pencil'
                         aria-hidden='true'
+                        style={{
+                          color: '#647278'
+                        }}
                       ></i>
                       <i
                         onClick={() => deleteTask(index)}
                         className='fa fa-trash'
                         aria-hidden='true'
-                      ></i>
+                        style={{
+                          color: '#647278'
+                        }}
+                      >
+                      </i>
                     </td>
                   </tr>
                 );
@@ -198,13 +224,23 @@ export default function Tasks() {
             </tbody>
           </table>
         </div>
+      </div>
       ) : (
         <div className='row no-task-card'>
           <div className='col-lg-4 offset-lg-4 col-md-4 offset-md-4'>
-            <div className='card card-background card-background-mask-primary mt-md-0 mt-5'>
+            <div style={{
+                  borderRadius: 11,
+                  padding: 20,
+              }}
+                className='card card-background card-background-mask-primary mt-md-0 mt-5'>
               <div className='card-body pt-5 text-center'>
                 <h4>You have No task.</h4>
-                <Button variant='primary' onClick={showModal}>
+                  <Button
+                    style={{
+                      backgroundColor: '#5285ec'
+                    }}
+                    variant='primary'
+                    onClick={showModal}>
                   <i className='fas fa-plus'></i> New Task
                 </Button>
               </div>

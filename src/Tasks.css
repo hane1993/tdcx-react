@@ -25,3 +25,12 @@ td i + i {
 .task-btn {
   width: 100% !important;
 }
+
+.simple-task {
+  color: #5285ec!important
+}
+
+.mark-completed-table {
+  color: #537178!important;
+  text-decoration: line-through;
+}

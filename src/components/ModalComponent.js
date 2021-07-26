@@ -40,7 +40,11 @@ export default function ModalComponent({
           onChange={(e) => setTask(e.target.value)}
         />
         <div className='d-grid gap-2 mt-3'>
-          <Button variant='primary' onClick={handleAddTask}>
+          <Button
+            style={{
+              backgroundColor: '#5285ec'
+            }}
+            variant='primary' onClick={handleAddTask}>
             <i className='fas fa-plus'></i> New Task
           </Button>
         </div>

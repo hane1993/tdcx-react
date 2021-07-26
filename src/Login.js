@@ -33,7 +33,14 @@ export default function Login() {
         height: '100vh',
       }}
     >
-      <div className='card login-card'>
+      <div style={{
+        borderRadius: 11,
+        padding: 20,
+        borderRadius: 11,
+        padding: 20,
+        boxShadow: '2px 6px 6px 5px rgb(0 0 0 / 10%)'
+      }}
+        className='card login-card'>
         <div className='card-body'>
           <h3 className='text-left'>Login</h3>
           <div className='input-group'>
@@ -62,6 +69,7 @@ export default function Login() {
             />
           </div>
           <button
+            style={{ backgroundColor: '#5285ec', borderRadius: 10 }}
             className='btn btn-primary login-btn mt-3'
             type='button'
             onClick={handleLogin}

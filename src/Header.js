@@ -17,8 +17,13 @@ export default function Header() {
             />
           </li>
         </ul>
-        <ul className='ct-docs-navbar-nav-right'>
-          <li className='ct-docs-navbar-nav-item'>
+        <ul style={{
+          textDecorationLine: 'none'
+        }} className='ct-docs-navbar-nav-right'>
+          <li style={{
+              textDecorationLine: 'none'
+          }}
+            className='ct-docs-navbar-nav-item'>
             <button
               className='btn btn-link'
               type='button'

@@ -3,6 +3,9 @@ import Chart from 'react-apexcharts';
 export const PieChart = (props) => {
   const options = {
     series: [props.completedTasks, props.totalTasks],
+    fill: {
+      colors: ['#5285ec','#e8ecec']
+    },
     options: {
       chart: {
         type: 'pie',
