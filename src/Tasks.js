@@ -14,13 +14,16 @@ export default function Tasks() {
   const [selectedTask, setSelectedTask] = useState('');
   const [taskId, setTaskId] = useState('');
   const [searchTask, setSearchTask] = useState('');
+  const [searchedTask, setSearchedTask] = useState([]);
+  const [titleName, setTitleName] = useState('Add');
 
   /**
    * Show Modal
    * @param {String} selectedId
    */
-  const showModal = (selectedId) => {
+  const showModal = (name, selectedId) => {
     setShow(true);
+    setTitleName(name);
 
     if (typeof selectedId === 'string') {
       setTaskId(selectedId);
@@ -105,20 +108,27 @@ export default function Tasks() {
    * @param {Event} e
    */
   const handleSearchOnChange = (e) => {
+    const newTasks = Object.keys(tasks)
+      .map((id) => {
+        if (tasks[id].task.indexOf(e.target.value) !== -1) return tasks[id];
+      })
+      .filter((updatedTask) => updatedTask);
+
     setSearchTask(e.target.value);
+    setSearchedTask(newTasks);
   };
 
   /**
    * Wait for the user to finish typing, to avoid multiple api requests
    */
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      apiRequest(`tasks?search=${searchTask}`, 'GET').then((response) => {
-        setTasks(response);
-      });
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchTask]);
+  // useEffect(() => {
+  //   const timeoutId = setTimeout(() => {
+  //     apiRequest(`tasks?search=${searchTask}`, 'GET').then((response) => {
+  //       setTasks(response);
+  //     });
+  //   }, 1000);
+  //   return () => clearTimeout(timeoutId);
+  // }, [searchTask]);
 
   /**
    * Initial call to the DB when the page is rendered (will run only once)
@@ -134,18 +144,21 @@ export default function Tasks() {
     handleGetAllTasks();
   }, [newTask]);
 
+  let loopingTasks =
+    searchTask || searchedTask.length > 0 ? searchedTask : tasks;
+
   return (
     <div className='tasks-page'>
       {Object.keys(tasks).length > 0 ? (
         <div className='container'>
           <div className='row mb-3'>
             <div className='col-lg-6 col-md-4 col-xs-12'>
-              <h3 style={{ color: '#6c757d!important' }} className='text-lg-start text-center'>
-                <strong>
-                  Tasks
-                </strong>
+              <h3
+                style={{ color: '#6c757d!important' }}
+                className='text-lg-start text-center'
+              >
+                <strong>Tasks</strong>
               </h3>
-              
             </div>
             <div className='col-lg-6 col-md-8 col-xs-12'>
               <div className='row'>
@@ -157,17 +170,19 @@ export default function Tasks() {
                     onChange={handleSearchOnChange}
                   />
                 </div>
-                <div style={{
-                  marginTop: -4,
-                }}
-                  className='col-md-4 col-xs-12'>
+                <div
+                  style={{
+                    marginTop: -4,
+                  }}
+                  className='col-md-4 col-xs-12'
+                >
                   <Button
                     className='btn-block mr-1 mt-1 task-btn'
                     variant='primary'
                     block
-                    onClick={showModal}
+                    onClick={() => showModal('Add')}
                     style={{
-                      backgroundColor: '#5285ec'
+                      backgroundColor: '#5285ec',
                     }}
                   >
                     <i className='fas fa-plus'></i> New Task
@@ -176,73 +191,80 @@ export default function Tasks() {
               </div>
             </div>
           </div>
-          <div style={{
-                borderRadius: 11,
-                padding: 20,
-              }}
+          <div
+            style={{
+              borderRadius: 11,
+              padding: 20,
+            }}
             className='card card-background card-background-mask-primary mt-md-0 mt-5 h-75'
           >
-          <table className='table table-hover'>
-            <tbody>
-              {Object.entries(tasks).map(([index, task]) => {
-                return (
-                  <tr key={index}>
-                    <th scope='row'>
-                      <input
-                        type='checkbox'
-                        name='task'
-                        defaultChecked={task.isComplete}
-                        value={index}
-                        onChange={handleTaskComplete}
-                      />
-                    </th>
-                    <td className={task.isComplete ? 'mark-completed-table' : 'simple-task'}>
-                      <strong>
-                        {task.task}
-                      </strong>
-                    </td>
-                    <td>
-                      <i
-                        onClick={() => showModal(index)}
-                        className='fa fa-pencil'
-                        aria-hidden='true'
-                        style={{
-                          color: '#647278'
-                        }}
-                      ></i>
-                      <i
-                        onClick={() => deleteTask(index)}
-                        className='fa fa-trash'
-                        aria-hidden='true'
-                        style={{
-                          color: '#647278'
-                        }}
+            <table className='table table-hover'>
+              <tbody>
+                {Object.entries(loopingTasks).map(([index, task]) => {
+                  return (
+                    <tr key={index}>
+                      <th scope='row'>
+                        <input
+                          type='checkbox'
+                          name='task'
+                          defaultChecked={task.isComplete}
+                          value={index}
+                          onChange={handleTaskComplete}
+                        />
+                      </th>
+                      <td
+                        className={
+                          task.isComplete
+                            ? 'mark-completed-table'
+                            : 'simple-task'
+                        }
                       >
-                      </i>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                        <strong>{task.task}</strong>
+                      </td>
+                      <td>
+                        <i
+                          onClick={() => showModal('Edit', index)}
+                          className='fa fa-pencil'
+                          aria-hidden='true'
+                          style={{
+                            color: '#647278',
+                          }}
+                        ></i>
+                        <i
+                          onClick={() => deleteTask(index)}
+                          className='fa fa-trash'
+                          aria-hidden='true'
+                          style={{
+                            color: '#647278',
+                          }}
+                        ></i>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
       ) : (
         <div className='row no-task-card'>
           <div className='col-lg-4 offset-lg-4 col-md-4 offset-md-4'>
-            <div style={{
-                  borderRadius: 11,
-                  padding: 20,
+            <div
+              style={{
+                borderRadius: 11,
+                padding: 20,
               }}
-                className='card card-background card-background-mask-primary mt-md-0 mt-5'>
+              className='card card-background card-background-mask-primary mt-md-0 mt-5'
+            >
               <div className='card-body pt-5 text-center'>
                 <h4>You have No task.</h4>
-                  <Button
-                    style={{
-                      backgroundColor: '#5285ec'
-                    }}
-                    variant='primary'
-                    onClick={showModal}>
+                <Button
+                  style={{
+                    backgroundColor: '#5285ec',
+                  }}
+                  variant='primary'
+                  onClick={() => showModal('Add')}
+                >
                   <i className='fas fa-plus'></i> New Task
                 </Button>
               </div>
@@ -251,6 +273,7 @@ export default function Tasks() {
         </div>
       )}
       <ModalComponent
+        titleName={titleName}
         show={show}
         hideModal={hideModal}
         addUpdateTask={addUpdateTask}

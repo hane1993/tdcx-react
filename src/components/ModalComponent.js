@@ -5,6 +5,7 @@ import { Button, FormControl } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function ModalComponent({
+  titleName,
   show,
   hideModal,
   addUpdateTask,
@@ -30,7 +31,7 @@ export default function ModalComponent({
   return (
     <Modal show={show} onHide={hideModal} centered size='sm'>
       <Modal.Body>
-        + New Task
+        + {titleName} Task
         <FormControl
           type='text'
           placeholder='Task Name'
@@ -42,10 +43,13 @@ export default function ModalComponent({
         <div className='d-grid gap-2 mt-3'>
           <Button
             style={{
-              backgroundColor: '#5285ec'
+              backgroundColor: '#5285ec',
             }}
-            variant='primary' onClick={handleAddTask}>
-            <i className='fas fa-plus'></i> New Task
+            variant='primary'
+            disabled={!task}
+            onClick={handleAddTask}
+          >
+            <i className='fas fa-plus'></i> {titleName} Task
           </Button>
         </div>
       </Modal.Body>
